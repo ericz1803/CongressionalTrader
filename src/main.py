@@ -7,13 +7,15 @@ import datetime
 
 from capitoltrades import CapitolTrades
 
+import os
+
 class Trader():
     def __init__(self, num_stocks=10, window=100):
         self.window = window
         self.num_stocks = num_stocks
         self.trades = CapitolTrades()
-        self.api_key = ""
-        self.api_secret = ""
+        self.api_key = os.environ['ALPACA_API_KEY']
+        self.api_secret = os.environ['ALPACA_API_SECRET']
         self.trading_client = TradingClient(self.api_key, self.api_secret, paper=True)
         self.stocks_to_trade = []
 
