@@ -5,7 +5,7 @@ jobs:
     name: build and deploy lambda
     strategy:
       matrix:
-        python-version: [3.10]
+        python-version: ['3.10']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
