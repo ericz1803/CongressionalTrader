@@ -17,7 +17,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          python-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node-version }}
       - name: Serverless Deploy
         uses: dhollerbach/actions.serverless-with-python-requirements@v2
         env:
