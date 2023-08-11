@@ -96,8 +96,8 @@ class Trader():
         print(f"Attempted to buy ${total_spent} worth of stocks.") 
 
 trader = Trader()
-def rebalance():
+def rebalance(event, context):
     trader.rebalance()
 
 if __name__ == '__main__':
-    rebalance()
+    rebalance(None, None)
