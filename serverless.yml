@@ -14,6 +14,9 @@ functions:
   run-rebalance:
     handler: main.rebalance
     timeout: 60
+    environment:
+      ALPACA_API_KEY: ${env:ALPACA_API_KEY}
+      ALPACA_API_SECRET: ${env:ALPACA_API_SECRET}
 
 plugins:
   - serverless-python-requirements
