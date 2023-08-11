@@ -6,6 +6,10 @@ provider:
   name: aws
   runtime: python3.10
 
+package:
+  exclude:
+    - node_modules/**
+
 functions:
   run-rebalance:
     handler: src/lambda_function.lambda_handler
