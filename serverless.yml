@@ -12,7 +12,7 @@ package:
 
 functions:
   run-rebalance:
-    handler: main.main
+    handler: main.rebalance
     timeout: 60
 
 plugins:
