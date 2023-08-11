@@ -94,10 +94,15 @@ class Trader():
             )
 
         print(f"Attempted to buy ${total_spent} worth of stocks.") 
-            
+
+def getTrader():
+    global trader
+    if not trader:
+        trader = Trader()
+    return trader
 
 def main():
-    trader = Trader()
+    trader = getTrader()
     trader.rebalance()
 
 if __name__ == '__main__':

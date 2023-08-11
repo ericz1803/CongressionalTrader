@@ -12,7 +12,7 @@ package:
 
 functions:
   run-rebalance:
-    handler: src/lambda_function.lambda_handler
+    handler: src/main.main
 
 plugins:
   - serverless-python-requirements
