@@ -21,4 +21,4 @@ jobs:
       - run: npm install -g serverless
       - run: npm install --save serverless-python-requirements
       - run: serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }} --verbose
-      - run: serverless deploy --verbose
+      - run: serverless deploy --verbose --stage production --region us-west-1
