@@ -15,8 +15,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-src/vendor
-src/capitoltrades/__pycache__
+**/__pycache__
 
 # Serverless directories
 .serverless
