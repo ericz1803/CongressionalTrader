@@ -20,3 +20,5 @@ src/capitoltrades/__pycache__
 
 # Serverless directories
 .serverless
+
+node_modules
