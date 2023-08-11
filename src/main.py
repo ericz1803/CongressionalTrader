@@ -13,7 +13,7 @@ class Trader():
     def __init__(self, num_stocks=10, window=100):
         self.window = window
         self.num_stocks = num_stocks
-        self.trades = CapitolTrades()
+        self.trades = CapitolTrades.CapitolTrades()
         self.api_key = os.environ['ALPACA_API_KEY']
         self.api_secret = os.environ['ALPACA_API_SECRET']
         self.trading_client = TradingClient(self.api_key, self.api_secret, paper=True)
@@ -95,15 +95,9 @@ class Trader():
 
         print(f"Attempted to buy ${total_spent} worth of stocks.") 
 
-def getTrader():
-    global trader
-    if not trader:
-        trader = Trader()
-    return trader
-
-def main():
-    trader = getTrader()
+trader = Trader()
+def rebalance():
     trader.rebalance()
 
 if __name__ == '__main__':
-    main()
+    rebalance()
