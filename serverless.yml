@@ -12,7 +12,8 @@ package:
 
 functions:
   run-rebalance:
-    handler: main.main
+    handler: src/main.main
+    timeout: 60
 
 plugins:
   - serverless-python-requirements
