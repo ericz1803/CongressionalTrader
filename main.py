@@ -72,9 +72,11 @@ class Trader():
         self.get_stocks_to_trade()
         print("Target stocks distribution:", self.stocks_to_trade)
 
-        self.trading_client.close_all_positions(True)
         account = self.trading_client.get_account()
-        account_bp = round(min(float(account.buying_power), float(account.equity)) * 0.999, 2)
+        account_bp = round(float(account.equity) * 0.999, 2)
+        
+        self.trading_client.close_all_positions(True)
+
         print("Target buy value", account_bp)
         total_money = account_bp
         total_spent = 0
