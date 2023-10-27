@@ -8,6 +8,7 @@ import datetime
 from capitoltrades import CapitolTrades
 
 import os
+import time
 
 class Trader():
     def __init__(self, num_stocks=10, window=100):
@@ -76,6 +77,7 @@ class Trader():
         account_bp = round(float(account.equity) * 0.999, 2)
         
         self.trading_client.close_all_positions(True)
+        time.sleep(5)
 
         print("Target buy value", account_bp)
         total_money = account_bp
