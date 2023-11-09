@@ -17,6 +17,10 @@ functions:
     environment:
       ALPACA_API_KEY: ${env:ALPACA_API_KEY}
       ALPACA_API_SECRET: ${env:ALPACA_API_SECRET}
+    events:
+      - eventBridge:
+          name: run-every-monday
+          schedule: cron(0 13 ? * MON *)
 
 plugins:
   - serverless-python-requirements

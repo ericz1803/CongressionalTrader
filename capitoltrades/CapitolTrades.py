@@ -99,57 +99,56 @@ class CapitolTrades():
         
         if not self.data:
             self.data = self.__get_data()
-        else:
-            latestPubDate = datetime.datetime.strptime(self.data[0]['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
-            new_data = []
-            page_num = 1
-            paginating = True
-            while paginating:
-                params = (
-                    ("page", page_num),
-                    # 100 is the max return size of the API.
-                    ("pageSize", 100),
-                )
-                r = self.__session.get(
-                    self.__url + "/trades",
-                    headers=self.__get_headers(),
-                    params=params,
-                )
-                r.raise_for_status()
+            print("Got seed data.")
 
-                response_json = r.json()
-                data = response_json["data"]
-                new_data.extend(data)
+        latestPubDate = datetime.datetime.strptime(self.data[0]['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
+        new_data = []
+        page_num = 1
+        paginating = True
+        while paginating:
+            print("Querying page", page_num)
+            params = (
+                ("page", page_num),
+                # 100 is the max return size of the API.
+                ("pageSize", 100),
+            )
+            r = self.__session.get(
+                self.__url + "/trades",
+                headers=self.__get_headers(),
+                params=params,
+            )
+            r.raise_for_status()
 
-                days_difference_window = float('inf') # for if window is in data
-                days_difference_data = -1 # for if we already have this data
-                if data:
-                    pubDate = datetime.datetime.strptime(data[-1]['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
-                    days_difference_window = (today - pubDate).days 
-                    days_difference_data = (pubDate - latestPubDate).days
-                print(days_difference_window, days_difference_data)
+            response_json = r.json()
+            data = response_json["data"]
+            new_data.extend(data)
 
-                if len(new_data) >= response_json["meta"]["paging"]["totalItems"] or not data or days_difference_window > self.window or days_difference_data <= 0:
-                    paginating = False
-                else:
-                    page_num += 1
-            
-            
-            print(len(new_data), len(self.data))
-            # merge new_data with existing data and remove stale data
-            seen = set()
-            merged_data = []
-            for item in new_data + self.data:
-                pubDate = datetime.datetime.strptime(item['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
-                days_diff = (today - pubDate).days
-                if item["_txId"] not in seen and days_diff <= self.window:
-                    seen.add(item["_txId"])
-                    merged_data.append(item)
-                    
-            print(f"Merged {len(new_data)} new records and {len(self.data)} old records into {len(merged_data)} total records.")
+            days_difference_window = float('inf') # for if window is in data
+            days_difference_data = -1 # for if we already have this data
+            if data:
+                pubDate = datetime.datetime.strptime(data[-1]['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
+                days_difference_window = (today - pubDate).days 
+                days_difference_data = (pubDate - latestPubDate).days
 
-            script_dir = os.path.dirname(__file__)
-            with open(os.path.join(script_dir, self.__pkl_path), "wb") as fp:
-                pickle.dump(merged_data, fp)
-            self.data = merged_data
-            
+            if len(new_data) >= response_json["meta"]["paging"]["totalItems"] or not data or days_difference_window > self.window or days_difference_data <= 0:
+                paginating = False
+            else:
+                page_num += 1
+        
+        # merge new_data with existing data and remove stale data
+        seen = set()
+        merged_data = []
+        for item in new_data + self.data:
+            pubDate = datetime.datetime.strptime(item['pubDate'], '%Y-%m-%dT%H:%M:%SZ').date()
+            days_diff = (today - pubDate).days
+            if item["_txId"] not in seen and days_diff <= self.window:
+                seen.add(item["_txId"])
+                merged_data.append(item)
+                
+        print(f"Merged {len(new_data)} new records and {len(self.data)} old records into {len(merged_data)} total records.")
+
+        script_dir = os.path.dirname(__file__)
+        with open(os.path.join(script_dir, self.__pkl_path), "wb") as fp:
+            pickle.dump(merged_data, fp)
+        self.data = merged_data
+        
