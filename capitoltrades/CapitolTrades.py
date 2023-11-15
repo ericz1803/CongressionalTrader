@@ -148,7 +148,11 @@ class CapitolTrades():
         print(f"Merged {len(new_data)} new records and {len(self.data)} old records into {len(merged_data)} total records.")
 
         script_dir = os.path.dirname(__file__)
-        with open(os.path.join(script_dir, self.__pkl_path), "wb") as fp:
-            pickle.dump(merged_data, fp)
+        try:
+            with open(os.path.join(script_dir, self.__pkl_path), "wb") as fp:
+                pickle.dump(merged_data, fp)
+        except Exception as e:
+            logging.error("Error saving pickle file: " + str(e))
+
         self.data = merged_data
         
